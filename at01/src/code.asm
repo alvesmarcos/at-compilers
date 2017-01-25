@@ -18,29 +18,25 @@
 	.globl _start
 
 _start:
-	movl 	$3, (x)
-	movl 	(x), %ecx
+	movl	$3, x
+	movl	(x), %ecx
 
-	cmpl	(y), %ecx
-	jne 	.L01 
-	movl 	$0, (z)
+	cmpl    (y), %ecx
+	jne     .L01 
+	movl    $0, (z)
 
 .L01:
-	xor 	%edx, %edx
-
-	movl 	(y), %eax
-	movl 	$5, %ebx
+	movl	(y), %eax
+ 	movl   	$5, %ebx
 	
-	imull	(%ebx)
+ 	imull  	%ebx, %eax
 
-	movl 	%edx, %eax
+ 	addl   	$3, %eax
+ 	subl   	$2, %eax
 
-	addl 	$3, %eax
-	subl 	$2, %eax
-
-	movl 	%eax, (z)
+ 	movl   	%eax, (z)
 
 _exit:
 	movl  	$1, %eax
-    movl  	$0, %ebx
+	movl  	(z), %ebx
 	int 	$0x80
