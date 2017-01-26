@@ -27,11 +27,10 @@ _start:
 
 .L01:
 	movl	(y), %eax
- 	movl   	$5, %ebx
-	
- 	imull  	%ebx, %eax
+ 
+ 	imull  	$5, %eax
 
- 	addl   	$3, %eax
+ 	addl   	(x), %eax
  	subl   	$2, %eax
 
  	movl   	%eax, (z)
