@@ -1,62 +1,24 @@
-# ++
-# Author: Marcos Alves
-# --
-
-LOAD	x
-NEXT
-STORE	3
-NEXT
-SET 	"A"
-NEXT
-STORE 	"M"
-NEXT
+[LOAD]	3
+STORE	x
 
 LOAD 	y
-XOR 	"M"
-NEXT 			
-JZ	    LINHA 23
-LOAD 	z
-NEXT
-STORE 	0
-NEXT
+XOR	 	x
+JNZ	    LINHA 10
+
+STORE 	z
 
 LOAD 	y
-NEXT 	
-SET 	"A"
-NEXT 	
-STORE 	"M"
-NEXT
-IMUL 	5
-NEXT
+[IMUL] 	5
+ADD 	x
+[ADD]	-2 
 
-SET 	"A"
-NEXT
-STORE   "R"
-NEXT
+STORE 	z
 
-LOAD 	x
-NEXT
-ADD		"M"
-NEXT
-
-SET 	"A"
-NEXT
-STORE   "R"
-NEXT
-
-ADD		-2
-NEXT
-
-LOAD 	z
-NEXT	
-STORE 	"R"
-
-
-1. LOAD
-2. STORE
-3. NEXT
-4. SET
+1. [LOAD]
+2. LOAD
+3. ADD
+4. [ADD]
 5. XOR
-6. ADD
-7. MUL
-8. JE
+6. [IMUL]
+7. STORE
+8. JNZ
