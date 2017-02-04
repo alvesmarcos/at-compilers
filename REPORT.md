@@ -122,4 +122,28 @@ Definição do microcode.
 
 111 0 0000001
 ```
+================
 
+##Atividade 02 (02/02/2017 - 02/02/2017)
+
+1. **RE** := (0 | 1) * (00 | 10 | 11)   
+2. 
+   - aa 
+   - a, b, bb, bbb ...
+3. DFA
+  
+  ![DFA](https://github.com/alvesmarcos/at-compilers/blob/master/media/at023.png)
+
+4. 
+   - S := aX  
+     X := aX | bX | cX | ε
+   - S := a | bc | bZ
+     Z := bZ | a
+5. 
+   - DFA α1
+   
+   ![DF1](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026a.png)
+   
+   - DFA α2
+   
+   ![DF2](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026b.png)
