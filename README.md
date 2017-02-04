@@ -137,7 +137,7 @@ Definição do microcode.
 4. 
    - S := aX  
      X := aX | bX | cX | ε
-   - S := a | bc | bZ
+   - S := a | bc | bZ  
      Z := bZ | a
 5. 
    - DFA α1
