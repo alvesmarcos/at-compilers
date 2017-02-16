@@ -1,30 +1,31 @@
-#Sobre
+# Sobre
 Repositório com todas as atividades do curso Construção de Compiladores I.
 
 ===============
 
-##Atividade 01 (26/01/2017 - 26/01/2017)
+## Atividade 01 (26/01/2017 - 26/01/2017)
 Implementação de um trecho de código nos três níveis de abstração.
 
-**Python**
-```python
-x = 3
-y = 1
+**C++**
+```cpp
+int main(){
+	int x = 3;
+	int y = 1;
 
-if(x==y):
-	z = 0
-
-z = x + y * 5 - 2
-
+	if(x==y)
+		z = 0;
+	z = x + y * 5 - 2;
+	return 0;
+}
 ```
 
 **Assembly GAS/AT&T**
- 
+
  ```assembly
 
 .SECTION .data
 	z:
-		.int 0	
+		.int 0
 	y:
 		.int 1
 
@@ -39,12 +40,12 @@ _start:
 	movl	(x), %ecx
 
 	cmpl    (y), %ecx
-	jne     .L01 
+	jne     .L01
 	movl    $0, (z)
 
 .L01:
 	movl	(y), %eax
- 
+
  	imull  	$5, %eax
 
  	addl   	(x), %eax
@@ -72,9 +73,9 @@ Os comandos utilizados para o microcode estão especifícados abaixo.
 |LOAD	   | 101 | Carrega o valor contido no endereço na memória|
 |STORE	 | 111 | Salva o que está no acumulador no parâmetro específicado|
 |XOR	 	 | 011 | Operação é verdade (1) quando as variáveis assumirem valores diferentes entre si.|
- 
+
  Tabela de endereços das variáveis utilizadas no programa.
- 
+
 |$|var|
 |:--:|:--:|
 |0000001| z|
@@ -100,7 +101,7 @@ Definição do microcode.
 10: LOAD 	y
 11: [IMUL] 	5
 12: ADD 	x
-13: [ADD]	-2 
+13: [ADD]	-2
 14:
 15: STORE 	z
 
@@ -118,32 +119,32 @@ Definição do microcode.
 101 0 0000011
 001 0 0000101
 100 0 0000111
-000 1 0000010 
+000 1 0000010
 
 111 0 0000001
 ```
 ================
 
-##Atividade 02 (02/02/2017 - 02/02/2017)
+## Atividade 02 (02/02/2017 - 02/02/2017)
 
 1. **RE** := (0 | 1) * (00 | 10 | 11)   
-2. 
-   - aa 
+2.
+   - aa
    - a, b, bb, bbb ...
 3. DFA
-  
+
   ![DFA](https://github.com/alvesmarcos/at-compilers/blob/master/media/at023.png)
 
-4. 
+4.
    - S := aX  
      X := aX | bX | cX | ε
    - S := a | bc | bZ  
      Z := bZ | a
-5. 
+5.
    - DFA α1
-   
+
    ![DF1](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026a.png)
-   
+
    - DFA α2
-   
+
    ![DF2](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026b.png)
