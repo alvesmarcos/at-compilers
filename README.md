@@ -151,3 +151,6 @@ Definição do microcode.
    ![DF2](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026b.png)
 
 ## Atividade 03 (09/02/2017)
+Adaptação de autômato finito dado em sala para que ele seja compatível com o Léxico do projeto final.
+
+![DFA03](https://github.com/alvesmarcos/at-compilers/blob/master/media/at03.png)
