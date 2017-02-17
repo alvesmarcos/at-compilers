@@ -11,6 +11,7 @@ Implementação de um trecho de código nos três níveis de abstração.
 int main(){
 	int x = 3;
 	int y = 1;
+	int z = 0;
 
 	if(x==y)
 		z = 0;
