@@ -1,7 +1,7 @@
 # Sobre
 Repositório com todas as atividades do curso Construção de Compiladores I.
 
-===============
+--------
 
 ## Atividade 01 (26/01/2017)
 Implementação de um trecho de código nos três níveis de abstração.
@@ -124,7 +124,6 @@ Definição do microcode.
 
 111 0 0000001
 ```
-================
 
 ## Atividade 02 (02/02/2017)
 
@@ -137,10 +136,10 @@ Definição do microcode.
   ![DFA](https://github.com/alvesmarcos/at-compilers/blob/master/media/at023.png)
 
 4.
-   - S := aX  
-     X := aX | bX | cX | ε
-   - S := a | bc | bZ  
-     Z := bZ | a
+   - S → aX  
+     X → aX | bX | cX | ε
+   - S → a | bc | bZ  
+     Z → bZ | a
 5.
    - DFA α1
 
@@ -154,3 +153,10 @@ Definição do microcode.
 Adaptação de autômato finito dado em sala para que ele seja compatível com o Léxico do projeto final.
 
 ![DFA03](https://github.com/alvesmarcos/at-compilers/blob/master/media/at03.png)
+
+## Atividade 05 (09/03/2017) 
+
+1. 
+   - S → aSdd | bXc  
+     X → bXc | ε
+	 
