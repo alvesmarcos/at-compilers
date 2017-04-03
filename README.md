@@ -185,10 +185,92 @@ Gerador léxico JFLEX
 
 ## Atividade 05 (09/03/2017)
 
-1.
-   - S → aSdd | bXc  
-     X → bXc | ε
+1. Encontre gramáticas livre de contexto que gerem as linguagens abaixo:
 
+* L(G) = {a^**n** b^**m** c^**m** d^**2n** | n ≥ 0, m > 0} 
+```
+S → aSdd | bRc  
+R → bRc | ε
+```
+* {w | w inicie e finalize com o mesmo símbolo}, considerando o alfabeto binário {0,1}
+```
+S → 0J0 | 1J1  
+J → 0J | 1J | ε
+```
+* {w | |w| is ímpar}, considerando o alfabeto binário {0,1}
+```
+S → 0J | 1J  
+J → 00J | 01J | 11J | 10J | ε
+```
+* {w | |w| é ímpar e o símbolo do meio é 0}, considerando o alfabeto binário {0,1}
+```
+J → 0J0 | 0J1 | 1J1 | 1J0 | 0
+```
 
+2. Explique porque a gramática abaixo é ambígua
 
+>S → 0A | 1B
+>
+>A → 0AA | 1S | 1
+>
+>B → 1BB | 0S | 0
+
+```
+Gramática é ambígua se existe uma cadeia que pode ser gerada pela gramática em mais de um caminho.
+```
+>entrada: **11001100**
+
+* Derivação ζ 
+```
+1B
+11BB
+1100S
+11001B
+110011BB
+11001100
+```
+* Derivação ϕ
+```
+1B
+11BB
+110S1BB
+1100A1BB
+110011BB
+11001100
+```
+3. Data a seguinte gramática livre de contexto ambígua, faça o que se pede:
+
+>S → Ab | aaB
+>
+>A → a | Aa
+>
+>B → b
+
+* Encontre uma string s gerada pela gramática que tem duas derivações mais a esquerda. Mostre estas derivações; 
+```
+aaB
+aab
+```
+```
+Ab
+Aab
+aab
+```
+* Desenhe as árvores sintáticas resultantes das duas derivações da string s.
+```
+   S
+ / | \
+a  a  B
+      |
+      b
+```
+```
+    S
+   / \
+  A   B
+ / \
+A   a
+|
+a
+```
 ## Atividade 06 (16/03/2017)
