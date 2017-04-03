@@ -37,26 +37,26 @@ int main(){
 	.globl _start
 
 _start:
-	movl	$3, x
-	movl	(x), %ecx
+	movl 	$3, x
+	movl 	(x), %ecx
 
-	cmpl    (y), %ecx
-	jne     .L01
-	movl    $0, (z)
+	cmpl 	(y), %ecx
+	jne 	.L01
+	movl 	$0, (z)
 
 .L01:
-	movl	(y), %eax
+	movl 	(y), %eax
 
-	imull  	$5, %eax
+	imull 	$5, %eax
 
-	addl   	(x), %eax
-	subl   	$2, %eax
+	addl 	(x), %eax
+	subl 	$2, %eax
 
-	movl   	%eax, (z)
+	movl 	%eax, (z)
 
 _exit:
-	movl  	$1, %eax
-	movl  	(z), %ebx
+	movl 	$1, %eax
+	movl 	(z), %ebx
 	int 	$0x80
 
  ```
@@ -108,8 +108,8 @@ Definição do microcode.
 
 =============================
 
-010	0 0000011
-111	0 0000111
+010 0 0000011
+111 0 0000111
 
 101 0 0000011
 011 0 0000111
@@ -267,7 +267,7 @@ a  a  B
 ```
     S
    / \
-  A   B
+  A   b
  / \
 A   a
 |
