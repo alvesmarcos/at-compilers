@@ -47,12 +47,12 @@ _start:
 .L01:
 	movl	(y), %eax
 
- 	imull  	$5, %eax
+	imull  	$5, %eax
 
- 	addl   	(x), %eax
- 	subl   	$2, %eax
+	addl   	(x), %eax
+	subl   	$2, %eax
 
- 	movl   	%eax, (z)
+	movl   	%eax, (z)
 
 _exit:
 	movl  	$1, %eax
@@ -94,8 +94,8 @@ Definição do microcode.
 02: STORE	x
 03:
 04: LOAD 	y
-05: XOR	 	x
-06: JNZ	    LINHA 10
+05: XOR 	x
+06: JNZ 	LINHA 10
 07:
 08: STORE 	z
 09:
@@ -112,8 +112,8 @@ Definição do microcode.
 111	0 0000111
 
 101 0 0000011
-011	0 0000111
-110	0 0001010
+011 0 0000111
+110 0 0001010
 
 111 0 0000001
 
@@ -127,36 +127,68 @@ Definição do microcode.
 
 ## Atividade 02 (02/02/2017)
 
-1. **RE** := (0 | 1) * (00 | 10 | 11)   
-2.
-   - aa
-   - a, b, bb, bbb ...
-3. DFA
+1. Encontre expressões regulares considerando o alfabeto binário {0,1} que determine a seguinte linguagem: **L = {u| u não acabe com 01}**
 
-  ![DFA](https://github.com/alvesmarcos/at-compilers/blob/master/media/at023.png)
+```
+(0 | 1) * (00 | 10 | 11)   
+```
+2. Considere as duas expressões regulares mostradas abaixo e resposta o que se pede:
+	- r1 = a\* + b\*
+	- r2 = ab\* + ba\* + b\*a + (a\*b)*
 
-4.
-   - S → aX  
-     X → aX | bX | cX | ε
-   - S → a | bc | bZ  
-     Z → bZ | a
-5.
-   - DFA α1
+- Encontre um exemplo de string que corresponda a r1 mas não a r2;
+```
+aa
+```
+- Encontre um exemplo de string que corresponda a r1 e a r2.
+```
+a, b, bb, bbb ...
+```
 
-   ![DF1](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026a.png)
+3. Construa um AFD para a linguagem com alfabeto {a,b,c} que não contenha palavras que possuam a sequência ac.
 
-   - DFA α2
+![DFA](https://github.com/alvesmarcos/at-compilers/blob/master/media/at023.png)
 
-   ![DF2](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026b.png)
+4. Dado o alfabeto Σ = {a,b,c} e as duas expressões α1 = a (a|b|c)\* e α2 = a|bc|b\*a:
+
+* Especifique a gramática regular equivalente à expressão α1
+```
+S → aX  
+X → aX | bX | cX | ε
+```
+* Especifique a gramática regular equivalente à expressão α2
+```
+S → a | bc | bZ  
+Z → bZ | a
+```
+5. Construa os autômatos finitos determinísticos para as expressões α1 e α2 do exercício anterior.
+
+- DFA α1
+
+![DF1](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026a.png)
+
+- DFA α2
+
+![DF2](https://github.com/alvesmarcos/at-compilers/blob/master/media/at026b.png)
 
 ## Atividade 03 (09/02/2017)
 Adaptação de autômato finito dado em sala para que ele seja compatível com o Léxico do projeto final.
 
 ![DFA03](https://github.com/alvesmarcos/at-compilers/blob/master/media/at03.png)
 
-## Atividade 05 (09/03/2017) 
+## Atividade 04 (16/02/2017)
+Implementação de um léxico para operações aritméticas utilizando as duas abordagens dadas em sala de aula.
 
-1. 
+Manulamente utilizando a linguagem ![C++](https://github.com/alvesmarcos/pascc/blob/master/src/lex/scanner.cc)
+
+Gerador léxico JFLEX
+
+## Atividade 05 (09/03/2017)
+
+1.
    - S → aSdd | bXc  
      X → bXc | ε
-	 
+
+
+
+## Atividade 06 (16/03/2017)
