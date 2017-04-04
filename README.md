@@ -274,3 +274,174 @@ A   a
 a
 ```
 ## Atividade 06 (16/03/2017)
+
+Retirar recursão a esquerda e não determinismo da gramática livre de contexto do projeto final.
+```pascal
+programa →
+	program id ;
+	declarações_variáveis
+	declarações_de_subprogramas
+	comando_composto
+	.
+```	
+```pascal	
+declarações_variáveis →
+	var lista_declarações_variáveis
+	| ε	
+```
+```
+lista_declarações_variáveis →
+	lista_de_identificadores : tipo ; lista_declarações_variáveis'
+	
+lista_declarações_variáveis' →	
+	lista_de_identificadores : tipo ;  lista_declarações_variáveis'
+	| ε
+```
+```
+lista_de_identificadores →
+	id lista_de_identificadores'
+
+lista_de_identificadores' →
+	, id lista_de_identificadores'
+	| ε
+```
+```pascal	
+tipo →
+	integer
+	| real
+	| boolean
+```
+```
+declarações_de_subprogramas → 
+	declaração_de_subprograma; declarações_de_subprogramas 
+	| ε
+```
+```pascal
+declaração_de_subprograma →
+	procedure id argumentos ;
+	declarações_variáveis
+	declarações_de_subprogramas
+	comando_composto
+```
+```
+argumentos →
+	(lista_de_parametros)
+	| ε
+```
+```
+lista_de_parametros →
+	lista_de_identificadores : tipo lista_de_parametros'
+	
+lista_de_parametros' → 
+	; lista_de_identificadores : tipo lista_de_parametros'
+	| ε
+```
+```pascal
+comando_composto →
+	begin
+	comandos_opcionais
+	end
+```
+```
+comandos_opcionais →
+	lista_de_comandos
+	| ε
+```
+```
+lista_de_comandos →
+	comando lista_de_comandos'
+
+lista_de_comandos' →
+	; comando lista_de_comandos'
+	| ε
+```
+```pascal
+comando →
+	variável := expressão
+	| ativação_de_procedimento
+	| comando_composto
+	| if expressão then comando parte_else
+	| while expressão do comando
+```
+```pascal
+parte_else →
+	else comando
+	| ε
+```
+```pascal
+variável →
+	id
+```
+```
+ativação_de_procedimento →
+	id paramsϕ
+
+paramsϕ → 
+	ε 
+	| (lista_de_expressões)
+```
+```
+lista_de_expressões →
+	expressão lista_de_expressões'
+
+lista_de_expressões' →
+	, expressão lista_de_expressões'
+	| ε
+```
+```
+expressão →
+	expressão_simples paramsδ
+
+paramsδ →
+	op_relacional expressão_simples
+	| ε
+```
+```
+expressão_simples →
+	termo expressão_simples'
+	| sinal termo expressão_simples'
+
+expressão_simples' →
+	op_aditivo termo expressão_simples'
+	| ε
+```
+```
+termo →
+	fator termo'
+	
+termo' → 
+	op_multiplicativo fator termo'
+	| ε
+```
+```pascal
+fator →
+	id paramsϕ
+	| num_int
+	| num_real
+	| true
+	| false
+	| (expressão)
+	| not fator
+```
+```pascal
+sinal →
+	+ | -
+```
+```pascal
+op_relacional →
+	= | <paramsκ | >paramsμ 
+	
+paramsκ →
+	ε | = | > 
+
+paramsμ →
+	ε | =
+```
+```pascal
+op_aditivo →
+	+ | - | or
+```
+```pascal
+op_multiplicativo →
+	* | / | and
+```	
