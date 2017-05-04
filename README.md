@@ -179,7 +179,7 @@ Adaptação de autômato finito dado em sala para que ele seja compatível com o
 ## Atividade 04 (16/02/2017)
 Implementação de um léxico para operações aritméticas utilizando as duas abordagens dadas em sala de aula.
 
-Manulamente utilizando a linguagem 
+Manulamente utilizando a linguagem C++
 ```cpp
 if(std::isdigit(ch)){
 	Type type = Type::kIntLiteral;
@@ -208,7 +208,29 @@ if(std::isdigit(ch)){
 ```
 A resolução completa pode ser vista em ![lexer-pascal](https://github.com/alvesmarcos/lexer-pascal/blob/master/src/lex/scanner.cc)
 
-Gerador léxico JFLEX
+Gerador léxico FLEX
+```C
+DIGIT[0-9]
+OPERATOR[+ | - | \ | *]
+
+%%
+{DIGIT}+  { 
+  printf("Integer number %s\n", yytext); 
+}
+{DIGIT}+"."{DIGIT}* {
+  printf("Real number %s\n", yytext);
+}
+{OPERATOR} {
+  printf("Operator %s\n", yytext);
+}
+%%
+
+int main(void) {
+  yylex();
+
+  return 0;
+}
+```
 
 ## Atividade 05 (09/03/2017)
 
