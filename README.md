@@ -494,3 +494,92 @@ op_aditivo →
 op_multiplicativo →
 	* | / | and
 ```	
+## Atividade 09 (20/04/2017)
+
+1. Responda:
+* Quando se pode aplicar a otimização de eliminação de sub-expressão comum?
+Suponha que a mesma expressão ocorre mais de uma vez em um trecho de programa:
+```ruby
+x = a + b
+# ...
+# ...
+y = a + b
+```
+S a e b não são alterados, é possível guardar o valor da expressão a+b em uma variável temporária. No exemplo acima, se a variável *x* estiver disponível com mesmo valor, podemos usar o próprio *x*.
+```ruby
+x = a + b
+# ...
+# ...
+y = x
+```
+
+* Qual o efeito que a quantidade de registradores tem no código gerado e por quê?
+
+2. Mostre como o código intermediário a seguir pode ser otimizado. Justifique as otimizações.
+* a.
+```ASM
+1 MOV a 0
+2 JGT a 10 5
+3 MOV x a
+4 JMP 6
+5 MOV x b
+6 RTN
+```
+Como *a* é um valor constante, podemos substituir em todos os pontos que *a* aparece o seu valor constante. Como o desvio é formado somente por constantes, podemos retirar (false) ou substituir por um JUMP (true). Linha 5 não é utilizada, restou apenas o nosso código otimizado.
+```ASM
+1 MOV x 0
+2 RTN
+```
+* b.
+```ASM
+1 MOV x 0
+2 JGT x 10 7
+3 MULT t1 y A
+4 ADD t2 x t1
+5 MOV x t2
+6 JMP 2
+7 RTN
+```
+No caso acima a única otimização possível é retirar o t2 e adicionar direto no *x*. 
+```ASM
+1 MOV x 0
+2 JGT x 10 6
+3 MULT t1 y A
+4 ADD x x t1
+5 JMP 2
+6 RTN
+```
+* c.
+```ASM
+1 MOV a 0
+2 MOV a p
+3 JGT 0 a 17
+4 DIV t1 a p
+5 JGT t1 0.5 9
+6 DIV t2 a p
+7 ADD t3 f t2
+8 MOV f t3
+9 DIV t4 a p
+10 JGT 0.5 t4 14
+11 DIV t5 a p
+12 SUB t6 f t5
+13 MOV f t6
+14 SUB t7 a 1
+15 MOV a t7
+16 JMP 3
+17 MOV p f
+```
+
+```ASM
+1 MOV a p
+2 JGT 0 a 10
+3 DIV t1 a p
+4 JGT t1 0.5 9
+5 ADD f f t1
+6 JGT 0.5 t1 9
+7 SUB f f t1
+8 SUB a a 1
+9 JMP 2
+10 MOV p f
+```
+
