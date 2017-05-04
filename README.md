@@ -515,6 +515,10 @@ y = x
 
 * Qual o efeito que a quantidade de registradores tem no código gerado e por quê?
 
+*"Os registradores estão no topo da hierarquia de memória, sendo assim, são o meio mais rápido de se armazenar um dado."*  
+
+Seguindo a linha de pensamento da afirmação acima, podemos perceber que a quantidade de registradores está toltamente ligada ao código intermediário gerado, isto fica claro principalmente em expressões aritméticas onde temos várias variáveis auxíliares criadas, dependendo da quantidade, podemos passar todas as variáveis temporárias para dentro dos registradores tornando o processo mais rápido.
+
 2. Mostre como o código intermediário a seguir pode ser otimizado. Justifique as otimizações.
 * a.
 ```ASM
@@ -540,14 +544,15 @@ Como *a* é um valor constante, podemos substituir em todos os pontos que *a* ap
 6 JMP 2
 7 RTN
 ```
-No caso acima a única otimização possível é retirar o t2 e adicionar direto no *x*. 
+Podemos retirar o comando *MULT t1 y A* do loop, já que o mesmo faz um cálculo constante.  
 ```ASM
 1 MOV x 0
-2 JGT x 10 6
-3 MULT t1 y A
-4 ADD x x t1
-5 JMP 2
-6 RTN
+2 MULT t1 y A
+3 JGT x 10 7
+4 ADD t2 x t1
+5 MOV x t2
+6 JMP 3
+7 RTN
 ```
 * c.
 ```ASM
@@ -569,17 +574,70 @@ No caso acima a única otimização possível é retirar o t2 e adicionar direto
 16 JMP 3
 17 MOV p f
 ```
-
+Podemos retirar a linha 1 logo no começo, já que em seguida é atribuido um valor *p* para varriável. Substituir *t2*, *t4*, *t5* por apenas *t1* pois todos contém o mesmo valor (DIV t1 a p).
 ```ASM
-1 MOV a p
-2 JGT 0 a 10
-3 DIV t1 a p
-4 JGT t1 0.5 9
-5 ADD f f t1
-6 JGT 0.5 t1 9
-7 SUB f f t1
-8 SUB a a 1
-9 JMP 2
-10 MOV p f
+1 MOV a p 
+2 JGT 0 a 7 
+3 DIV t1 a p  
+4 SUB t2 f t1 
+5 MOV f t2
+6 SUB t2 a 1
+7 JMP 2 
+8 MOV p f
+```
+3. Indique qual o numero de registradores necessários para calcular as expressões a seguir. Lembrando que você precisa passar as instruções abaixo para a codificação de três endereços. (utilizem quantos registradores forem necessários)
+
+* a. (a+b)\*(c-d)
+```ASM
+1 ADD t1 a b
+2 SUB t2 c d
+3 MULT t3 t1 t2
 ```
 
+* b. (a+(b-c))\*((e-f)+(g-h))
+```ASM
+1 ADD t1 b c
+2 SUB t2 a t1
+3 SUB t3 e f
+4 SUB t4 g h
+5 ADD t5 t3 t4
+4 MULT t6 t5 t2
+```
+
+* c. ((a-b)\*(c-d)+(e-f)\*(g-h))
+```ASM
+1 SUB t1 a b
+2 SUB t2 c d
+3 MULT t3 t1 t2
+4 SUB t4 e f
+5 SUB t5 g h
+6 MULT t6 t4 t5
+7 ADD t7 t3 t6
+```
+4. Refaça a questão anterior utilizando o menor número possível de registradores que você conseguir.
+
+* a. (a+b)\*(c-d)
+```ASM
+1 ADD t1 a b
+2 SUB t2 c d
+3 MULT t3 t1 t2
+```
+* b. (a+(b-c))\*((e-f)+(g-h))
+```ASM
+1 ADD t1 b c
+2 SUB t2 a t1
+3 SUB t1 e f
+4 SUB t3 g h
+5 ADD t4 t1 t3
+4 MULT t1 t4 t2
+```
+* c. ((a-b)\*(c-d)+(e-f)\*(g-h))
+```ASM
+1 SUB t1 a b
+2 SUB t2 c d
+3 MULT t3 t1 t2
+4 SUB t1 e f
+5 SUB t2 g h
+6 MULT t4 t1 t2
+7 ADD t1 t3 t4
+```
