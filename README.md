@@ -1,3 +1,5 @@
+Marcos H. Alves da Silva 
+
 # Sobre
 Repositório com todas as atividades do curso Construção de Compiladores I.
 
@@ -181,29 +183,43 @@ Implementação de um léxico para operações aritméticas utilizando as duas a
 
 Manulamente utilizando a linguagem C++
 ```cpp
-if(std::isdigit(ch)){
-	Type type = Type::kIntLiteral;
-	std::string number(1, ch);
-	ch = GetNextChar();
-	
-	while(std::isdigit(ch)){
-		number += ch;
-		ch = GetNextChar();
+switch (ch) {
+	case '+': case '-': {
+		this->queue_token.push(Token{std::string(1, ch), line, Type::kAddOperator});
+		break;
 	}
-	if(ch=='.') {
-		number += ch;
+	case '*': case '/': {
+		this->queue_token.push(Token{std::string(1, ch), line, Type::kMulOperator});
+		break;
+	}
+	
+	...
+	...
+	
+	if(std::isdigit(ch)){
+		Type type = Type::kIntLiteral;
+		std::string number(1, ch);
 		ch = GetNextChar();
-    
-		if(not isdigit(ch))
-			LexerError("expected a digit after '.'");
-		type = kRealLiteral;
-    
-		do {
+
+		while(std::isdigit(ch)){
 			number += ch;
 			ch = GetNextChar();
-		} while(isdigit(ch));
+		}
+		if(ch=='.') {
+			number += ch;
+			ch = GetNextChar();
+
+			if(not isdigit(ch))
+				LexerError("expected a digit after '.'");
+			type = kRealLiteral;
+
+			do {
+				number += ch;
+				ch = GetNextChar();
+			} while(isdigit(ch));
+		}
+		this->queue_token.push(Token{number, line, type});
 	}
-	this->queue_token.push(Token{number, line, type});
 }
 ```
 A resolução completa pode ser vista em ![lexer-pascal](https://github.com/alvesmarcos/lexer-pascal/blob/master/src/lex/scanner.cc)
@@ -494,6 +510,50 @@ op_aditivo →
 op_multiplicativo →
 	* | / | and
 ```	
+## Atividade 07 (23/03/2017)
+Implementação do sintático via API (JCup)
+ ```Java
+ /* Simple +/-/* expression language; parser evaluates constant expressions on the fly*/
+import java_cup.runtime.*;
+
+parser code {:
+    // Connect this parser to a scanner!
+    scanner s;
+    Parser(scanner s){ this.s=s; }
+:}
+
+/* define how to connect to the scanner! */
+init with {: s.init(); :};
+scan with {: return s.next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal            SEMI, PLUS, MINUS, TIMES, UMINUS, LPAREN, RPAREN;
+terminal Integer    NUMBER;        // our scanner provides numbers as integers
+
+/* Non terminals */
+non terminal            expr_list;
+non terminal Integer    expr;      // used to store evaluated subexpressions
+
+/* Precedences */
+precedence left PLUS, MINUS;
+precedence left TIMES;
+precedence left UMINUS;
+
+/* The grammar rules */
+expr_list ::= expr_list expr:e SEMI         {: System.out.println(e);:}
+            | expr:e SEMI                   {: System.out.println(e);:}
+;
+expr      ::= expr:e1 PLUS  expr:e2         {: RESULT = e1+e2;       :}
+             | expr:e1 MINUS expr:e2        {: RESULT = e1-e2;       :}
+             | expr:e1 TIMES expr:e2        {: RESULT = e1*e2;       :}
+             | MINUS expr:e                 {: RESULT = -e;          :}
+  	     %prec UMINUS
+       | LPAREN expr:e RPAREN	         {: RESULT = e;           :}
+       | NUMBER:n	                     {: RESULT = n;           :}
+             ;
+ ```
+O exemplo completo pode ser visto em ![JCUP Calculator](http://www2.cs.tum.edu/projects/cup/examples.php#calc)
+
 ## Atividade 09 (20/04/2017)
 
 1. Responda:
@@ -641,3 +701,44 @@ Podemos retirar a linha 1 logo no começo, já que em seguida é atribuido um va
 6 MULT t4 t1 t2
 7 ADD t1 t3 t4
 ```
+## Atividade 10 (27/04/2017)
+
+![Tecnologia Adaptativa Aplicada à Otimização de Código em Compiladores](http://www.di.ufpb.br/clauirton/Compiladores/Seminarios/TecnicasParaSistEmbut.pdf)
+
+### Otimização para Sistemas Embarcados
+
+Geralmente em sistemas microcontrolados temos um curto espaço de memória para programação, isto é visto como uma grande barreira para diversos projetista, tendo como a principal tarefa tentar adaptar um software dentro de uma região mínima de memória. Assim sendo, o artigo propõe um otimizador *peephole* explorarando a técnica **adaptativa** que requer mais memória do que tempo de execução. 
+
+Para entender como funciona a união da otimização *peephole* e a técnica adaptativa no algoritmo proposto, é preciso saber o que cada um faz. Primeiramente temos:
+
+* **Otimização *Peephole*** -
+A ideia base é melhorar um conjunto pequeno de instruções de máquina, podendo ser eliminada ou substituída no código intermediário.
+
+Exemplo proposto no artigo, original e otimizado respectivamente.
+
+```ASM
+jeq %00
+jmp %01
+%00
+```
+```ASM
+jne %01
+%00
+```
+*substitui uma sequência de salto em igualdade e salto incondicional por uma sequência de salto em desigualdade.*
+
+A substituição ou a eliminação de uma sequência de instruções, possibilita a realização de uma nova otimização já que cada trecho de código modificado pode afetar indiretamente outra parte. Logicamente diminui o desempenho do compilador dependendo de quantas análises no código seriam feitas, entretanto existem algoritmos de busca e substituição que buscam minimizar a perca do desempenho do compilador, o utilizado no artigo proposto foi o desenvolvido por Lamb que reduz o número de passo para apenas um. Seu funcionamento é bastante simples, utiliza-se uma pilha para armazenar as instruções do código objeto e efetua os seguintes passos:
+1. insere a instrução no topo da pilha;
+2. verifica se existe uma sequência de instruções a ser  eliminada  ou  substituída  do  topo  da pilha  para  baixo;
+3. efetua  a  otimização,  caso  exista,  e  volta  para  o  passo  2;
+4. repete o mesmo procedimento enquanto  houver  instruções  a  serem  processadas;
+
+*No artigo existe uma imagem do funcionamento que deixa ainda mais claro o funcionamento*  
+
+* **Tecnologia Adaptativa** -
+Basicamente trata de técnicas e dispositivos que modificam espontaneamente seu o seu comportamento em resposta a uma condição de entrada. É proposta por um brasileiro (![João José Neto](https://pt.wikipedia.org/wiki/Jo%C3%A3o_Jos%C3%A9_Neto)) que se baseia no formalismo dos Autômatos de Pilha Estruturados.
+
+O algoritmo descrito no artigo, usa a ação adaptativa para aplicar todas a possíveis regras de otimização concorrente, tendo como condição de entrada a detecção de regras que podem ser aplicadas simultâneamente. Simula-se a concorrência utilizando uma pilha para armazenar o contexto de cada *thread*. Na seção 3 do artigo é descrito o passo a passo.
+
+#### Opinião
+Otimizar é um processo bastante complicado e inicialmente confuso, para Sistemas Embarcados é **Indiscutível** a necessidade de ter um compilador enxuto e bastante otimizado. A tendência dos novos otimizadores conseguir aplicar o máximo de regras de otimização de maneira simultânea, o que se torna uma tarefa díficil pois um trecho de código otimizado pode influênciar em parte do programa. Como vimos acima existem grandes avanços na otimização de código de maneira simultânea e com certeza o futuro serão dos otimizadores desse tipo. 
