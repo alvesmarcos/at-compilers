@@ -181,6 +181,34 @@ Implementação de um léxico para operações aritméticas utilizando as duas a
 
 Manulamente utilizando a linguagem ![C++](https://github.com/alvesmarcos/pascc/blob/master/src/lex/scanner.cc)
 
+**C++**
+```cpp
+if(std::isdigit(ch)){
+	Type type = Type::kIntLiteral;
+	std::string number(1, ch);
+	ch = GetNextChar();
+	
+	while(std::isdigit(ch)){
+		number += ch;
+		ch = GetNextChar();
+  }
+	if(ch=='.') {
+		number += ch;
+  	ch = GetNextChar();
+    
+		if(not isdigit(ch))
+    	LexerError("expected a digit after '.'");
+    type = kRealLiteral;
+    
+		do {
+    	number += ch;
+      ch = GetNextChar();
+    } while(isdigit(ch));
+  }
+  this->queue_token.push(Token{number, line, type});
+}
+```
+
 Gerador léxico JFLEX
 
 ## Atividade 05 (09/03/2017)
