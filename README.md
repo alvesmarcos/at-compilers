@@ -494,13 +494,7 @@ sinal →
 ```
 ```pascal
 op_relacional →
-	= | <paramsκ | >paramsμ 
-	
-paramsκ →
-	ε | = | > 
-
-paramsμ →
-	ε | =
+	= | < | > | <= | >= | <>
 ```
 ```pascal
 op_aditivo →
